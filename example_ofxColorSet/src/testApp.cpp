@@ -13,20 +13,20 @@ void testApp::setup(){
     m_oColorSet.loadFromXml(pathXml);
     
     // QQES SLIDERS --
-    gui.setup("Choose a color set");
+    colorSet.setup("Choose a color set", "settings.xml", 10, 10);
+    colorSet.add(guiLblColorSet.setup("ColorSet", ""));
+    colorSet.add(guiNext.setup("Next"));
+    colorSet.add(guiPrev.setup("Prev"));
+    colorSet.add(guiBtnLoad.setup("Load colors from xml"));
+    colorSet.add(guiBtnSave.setup("Save colors into xml"));
+   // colorSet.add(guiAddColorSet.setup("Add a colorset"));
+   // colorSet.add(guiAddColor.setup("Add a color"));
     
-    gui.add(guiNext.setup("Next"));
-    gui.add(guiPrev.setup("Prev"));
-    gui.add(guiBtnLoad.setup("Load colors from xml"));
-    gui.add(guiBtnSave.setup("Save colors into xml"));
-    
-    gui.add(guiLblColorSet.setup("ColorSet", ""));
-            
-    
-    gui.add(guiColor_1.setup("Color 1",ofColor(100,100,140),ofColor(0,0),ofColor(255,255)));
-    gui.add(guiColor_2.setup("Color 2",ofColor(100,140,100),ofColor(0,0),ofColor(255,255)));
-    gui.add(guiColor_3.setup("Color 3",ofColor(140,100,100),ofColor(0,0),ofColor(255,255)));
-    gui.add(guiColor_4.setup("Color 4",ofColor(140,100,140),ofColor(0,0),ofColor(255,255)));
+    colors.setup("colors", "settings.xml", 250, 10);
+    colors.add(guiColor_1.setup("Color 1",ofColor(100,100,140),ofColor(0,0),ofColor(255,255)));
+    colors.add(guiColor_2.setup("Color 2",ofColor(100,140,100),ofColor(0,0),ofColor(255,255)));
+    colors.add(guiColor_3.setup("Color 3",ofColor(140,100,100),ofColor(0,0),ofColor(255,255)));
+    colors.add(guiColor_4.setup("Color 4",ofColor(140,100,140),ofColor(0,0),ofColor(255,255)));
     
     loadFromColorSet();
 
@@ -35,6 +35,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
+    // Navigate into your sets
     if(guiNext){
         m_oColorSet.nextSet();
         loadFromColorSet();
@@ -44,12 +45,20 @@ void testApp::update(){
         loadFromColorSet();
     }
     
-        // Reload Colors
-    if(guiBtnLoad)
-        m_oColorSet.loadFromXml(pathXml);
+    // Reload a file
+    if(guiBtnLoad){
+        ofFileDialogResult   pathToLoad = ofSystemLoadDialog("Select a file to load");
+        
+        if(pathToLoad.bSuccess){
+            pathXml = pathToLoad.getPath();
+            m_oColorSet.loadFromXml(pathXml);
+        }
+        
+    }
     
+    // Save into file
     if (guiBtnSave){
-        ofFileDialogResult   pathToSave = ofSystemSaveDialog("colorset.xml", "Select a file to save");
+        ofFileDialogResult   pathToSave = ofSystemSaveDialog("colorSets.xml", "Select a file to save");
         
         if(pathToSave.bSuccess){
             pathXml = pathToSave.getPath();
@@ -57,7 +66,19 @@ void testApp::update(){
         }
         
     }
+
+    if(guiAddColorSet){
+        m_oColorSet.addSet("toto");
+    }
     
+    if(guiAddColor){
+        float proba = 0.5;
+        ofColor color(127);
+        m_oColorSet.currentSet().addColor(proba, color);
+    }
+        
+    
+    // Puts the colors into the current Set
     m_oColorSet.setCurrentSetColor(0, guiColor_1);
     m_oColorSet.setCurrentSetColor(1, guiColor_2);
     m_oColorSet.setCurrentSetColor(2, guiColor_3);
@@ -81,7 +102,8 @@ void testApp::draw(){
     ofBackground(100);
 
     // GUI -------------------------------------------------
-    gui.draw();
+    colorSet.draw();
+    colors.draw();
     
     //DEMONSTRATION OF COLOR SET ---------------------------
     ofPushStyle();

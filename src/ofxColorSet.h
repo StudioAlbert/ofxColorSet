@@ -22,14 +22,15 @@ class ofxColorSet{
     private:
         vector<ofxBasicColorSet>  m_aSets;
 
-        void addSet(string _name);
         void addSet(ofxBasicColorSet);
     
+    
+    public:
+        void addSet(string _name);
         void addColorToKnownSet(string _name, oneColor proba);
         void addColorToKnownSet_RGB(string _name, float proba, int _r, int _g, int _b, int _a=255);
         void addColorToKnownSet_HSB(string _name, float proba, int _h, int _s, int _b, int _a=255);
 
-    public:
         ofColor getCurrentSetByIndex(int _index);
         ofColor getCurrentSetByProba();
         ofColor getCurrentSetByProgress(float _progress);

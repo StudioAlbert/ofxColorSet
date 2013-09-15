@@ -102,20 +102,21 @@ bool ofxBasicColorSet::loadFromXml(ofXml &_xml){
 ofXml ofxBasicColorSet::saveIntoXml(){
     
     ofXml xml;
+    int     idxColor = 0;
     
     vector<oneColor>::iterator colorToSave;
-    string      msg;
     
     // First put the name -----------------------------------------------
-    xml.addChild("colorset");
-    xml.setTo("colorset");
+    xml.addChild(TAG_ColorSet);
+    xml.setTo(TAG_ColorSet);
     
     xml.addValue("name", m_name);
+    //xml.setToPrevSibling();
     
     for(colorToSave=m_colors.begin(); colorToSave!=m_colors.end(); colorToSave++){
     
         xml.addChild("color");
-        xml.setTo("color");
+        xml.setTo("color[" + ofToString(idxColor++) + "]");
         
         xml.addValue("probability", ofToString((*colorToSave).m_proba));
         // RGB or HSB ????
@@ -123,21 +124,33 @@ ofXml ofxBasicColorSet::saveIntoXml(){
         xml.addValue("hue",(*colorToSave).m_color.getHue());
         xml.addValue("saturation",(*colorToSave).m_color.getSaturation());
         xml.addValue("brightness",(*colorToSave).m_color.getBrightness());
-//        xml.addValue("alpha", ofToString((*colorToSave).m_color.a));
+        // don't know why, alpha sucks...
+        int alpha = (*colorToSave).m_color.a;
+        xml.addValue("alpha", alpha);
     
         // go back up
-        xml.setToPrevSibling();
+        xml.setToParent();
+        
     }
     
     // go back up
-    xml.setToPrevSibling();
+    //xml.setToPrevSibling();
 
-    ofLogVerbose() << xml.toString();
-    
     // go back up
     return xml;
     
 }
+
+void ofxBasicColorSet::addColor(float _proba, ofColor _color){
+    
+    oneColor colorToAdd;
+    
+    colorToAdd.m_color = _color;
+    colorToAdd.m_proba   = _proba;
+    
+    addColor(colorToAdd);
+}
+
 
 void ofxBasicColorSet::addColorRGB(float _proba, int _r, int _g, int _b, int _a){
     

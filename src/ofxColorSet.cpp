@@ -23,14 +23,18 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
     }
 
     ofLogVerbose("ofxColorSet") << "XML file [" << _xmlFile << "] correctly loaded";
-    ofLogVerbose("ofxColorSet") << "XML Content" << endl << xml.toString();
+    ofLogVerbose("ofxColorSet") << "XML Content to load" << endl << xml.toString();
 
     // Check about som colorsetfiles
-    if(xml.exists("colorSet"))
+    if(xml.exists(TAG_ColorSet))
     {
         
         // This gets the first file
-        xml.setTo("colorSet[0]");
+        string tagColorSet;
+        tagColorSet = TAG_ColorSet;
+        tagColorSet += "[0]";
+        
+        xml.setTo(tagColorSet);
         
         do {
             ofxBasicColorSet setToAdd;
@@ -44,6 +48,8 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
 
         // go back up
         xml.setToParent();
+    }else{
+        ofLogError() << "Seems to be empty.";
     }
 
  
@@ -55,30 +61,32 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
 void ofxColorSet::saveIntoXml(string _xmlFile){
     
     ofXml   xml;
-    ofFile  fileControl(_xmlFile);
-    vector<ofxBasicColorSet>::iterator  oneSet;
     
-//    if(!fileControl.exists()){
-//        ofLogError("ofxColorSet") << "The file [" << fileControl.getAbsolutePath() << "] does not exist.";
-//        return false;
-//    }
+    vector<ofxBasicColorSet>::iterator  oneSet;
+    int     idxSet = 0;
+    
+    // Add the root
+    xml.addChild(TAG_Root_ColorSets);
     
     // Check about som colorsetfiles
     for(oneSet = m_aSets.begin(); oneSet != m_aSets.end(); oneSet++){
+        
         ofXml xmlToAdd = (*oneSet).saveIntoXml();
-        //xml.addXml(xmlToAdd);
+        
+        //ofLogVerbose() << "XML ToAdd Content :" << endl << xmlToAdd.toString();
+        xml.addXml(xmlToAdd);
+        
     }
+    
+    ofLogVerbose("ofxColorSet") << "XML Content" << endl << xml.toString();
+    
     
     if(xml.save(_xmlFile)){
-        ofLogVerbose("ofxColorSet") << "XML file [" << _xmlFile << "] correctly saved";
-        ofLogVerbose("ofxColorSet") << "XML Content" << endl << xml.toString();
-        
+        //ofLogVerbose("ofxColorSet") << "XML file [" << _xmlFile << "] correctly saved";
     }else{
         ofLogError("ofxColorSet") << "XML file [" << _xmlFile << "] can not be saved.";
-        
     }
-    
-    
+
 }
 
 ofxColorSet::~ofxColorSet(){
@@ -204,6 +212,9 @@ ofColor ofxColorSet::getInSetNumByProba(int _num){
     float probasSum = 0;
     vector<oneColor>::iterator colorProba;
 
+    if(m_aSets.size()<=0)
+        return ofColor(0);
+    
     for(colorProba=m_aSets[_num].m_colors.begin();colorProba!=m_aSets[_num].m_colors.end();colorProba++){
 
         // Sum every proba found until it goes right (at the end it's 1, and it goes right)
@@ -243,7 +254,10 @@ ofColor ofxColorSet::getInSetNumByProgress(int _num, float _progress){
 
     oneColor colorProba_prev;
     oneColor colorProba_next;
-
+    
+    if(m_aSets.size()<=0)
+        return ofColor(0);
+    
     for( int i=0; i<m_aSets[_num].getSize(); i++){
 
         colorProba_prev = m_aSets[_num].m_colors[i];

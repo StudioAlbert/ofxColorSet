@@ -22,19 +22,20 @@ private:
     
     bool m_loadColorsFromSet;
     
+    ofxPanel colorSet;
     ofFloatColor m_color_1;
     ofFloatColor m_color_2;
     ofFloatColor m_color_3;
     ofFloatColor m_color_4;
-    
-    ofxPanel gui;
-    
     ofxLabel    guiLblColorSet;
-    ofxLabel    guiLblColors;
     
     ofxButton   guiBtnLoad;
     ofxButton   guiBtnSave;
+
+    ofxButton   guiAddColorSet;
+    ofxButton   guiAddColor;
     
+    ofxPanel    colors;
     ofxColorSlider  guiColor_1;
     ofxColorSlider  guiColor_2;
     ofxColorSlider  guiColor_3;
