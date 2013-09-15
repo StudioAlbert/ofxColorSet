@@ -24,6 +24,7 @@ public:
     ofxBasicColorSet( const ofxBasicColorSet& other );
     
     bool loadFromXml(ofXml &_xml);
+    ofXml saveIntoXml();
     
     string           m_name;
     vector<oneColor> m_colors;

@@ -29,16 +29,12 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
     if(xml.exists("colorSet"))
     {
         
-        int idxColorSet = 0;
-        
         // This gets the first file
         xml.setTo("colorSet[0]");
         
         do {
             ofxBasicColorSet setToAdd;
             
-            //ofLogVerbose() << idxColorSet++ << " : " << xml.getValue("name") << ":" << xml.getNumChildren();
-
             if(setToAdd.loadFromXml(xml)){
                 // We can add, the set seems good
                 addSet(setToAdd);
@@ -52,6 +48,36 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
 
  
     return true;
+    
+}
+
+
+void ofxColorSet::saveIntoXml(string _xmlFile){
+    
+    ofXml   xml;
+    ofFile  fileControl(_xmlFile);
+    vector<ofxBasicColorSet>::iterator  oneSet;
+    
+//    if(!fileControl.exists()){
+//        ofLogError("ofxColorSet") << "The file [" << fileControl.getAbsolutePath() << "] does not exist.";
+//        return false;
+//    }
+    
+    // Check about som colorsetfiles
+    for(oneSet = m_aSets.begin(); oneSet != m_aSets.end(); oneSet++){
+        ofXml xmlToAdd = (*oneSet).saveIntoXml();
+        //xml.addXml(xmlToAdd);
+    }
+    
+    if(xml.save(_xmlFile)){
+        ofLogVerbose("ofxColorSet") << "XML file [" << _xmlFile << "] correctly saved";
+        ofLogVerbose("ofxColorSet") << "XML Content" << endl << xml.toString();
+        
+    }else{
+        ofLogError("ofxColorSet") << "XML file [" << _xmlFile << "] can not be saved.";
+        
+    }
+    
     
 }
 

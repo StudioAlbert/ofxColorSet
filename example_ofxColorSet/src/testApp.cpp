@@ -9,20 +9,26 @@ void testApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(25);
 
-    m_oColorSet.loadFromXml("ColorSets.xml");
+    pathXml = "ColorSets.xml";
+    m_oColorSet.loadFromXml(pathXml);
     
     // QQES SLIDERS --
     gui.setup("Choose a color set");
     
     gui.add(guiNext.setup("Next"));
     gui.add(guiPrev.setup("Prev"));
+    gui.add(guiBtnLoad.setup("Load colors from xml"));
+    gui.add(guiBtnSave.setup("Save colors into xml"));
+    
     gui.add(guiLblColorSet.setup("ColorSet", ""));
             
-    gui.add(  guiBtnLoad.setup("Load colors from set"));
-    gui.add(  guiColor_1.setup("Color 1",ofColor(100,100,140),ofColor(0,0),ofColor(255,255)));
-    gui.add(  guiColor_2.setup("Color 2",ofColor(100,140,100),ofColor(0,0),ofColor(255,255)));
-    gui.add(  guiColor_3.setup("Color 3",ofColor(140,100,100),ofColor(0,0),ofColor(255,255)));
-    gui.add(  guiColor_4.setup("Color 4",ofColor(140,100,140),ofColor(0,0),ofColor(255,255)));
+    
+    gui.add(guiColor_1.setup("Color 1",ofColor(100,100,140),ofColor(0,0),ofColor(255,255)));
+    gui.add(guiColor_2.setup("Color 2",ofColor(100,140,100),ofColor(0,0),ofColor(255,255)));
+    gui.add(guiColor_3.setup("Color 3",ofColor(140,100,100),ofColor(0,0),ofColor(255,255)));
+    gui.add(guiColor_4.setup("Color 4",ofColor(140,100,140),ofColor(0,0),ofColor(255,255)));
+    
+    loadFromColorSet();
 
 }
 
@@ -39,20 +45,24 @@ void testApp::update(){
     }
     
         // Reload Colors
-    if(guiBtnLoad){
-        loadFromColorSet();
-
-    }else{
-
-        m_oColorSet.m_currentSet = m_oColorSet.m_currentSet;
-
-        m_oColorSet.setCurrentSetColor(0, guiColor_1);
-        m_oColorSet.setCurrentSetColor(1, guiColor_2);
-        m_oColorSet.setCurrentSetColor(2, guiColor_3);
-        m_oColorSet.setCurrentSetColor(3, guiColor_4);
+    if(guiBtnLoad)
+        m_oColorSet.loadFromXml(pathXml);
+    
+    if (guiBtnSave){
+        ofFileDialogResult   pathToSave = ofSystemSaveDialog("colorset.xml", "Select a file to save");
+        
+        if(pathToSave.bSuccess){
+            pathXml = pathToSave.getPath();
+            m_oColorSet.saveIntoXml(pathXml);
+        }
         
     }
-
+    
+    m_oColorSet.setCurrentSetColor(0, guiColor_1);
+    m_oColorSet.setCurrentSetColor(1, guiColor_2);
+    m_oColorSet.setCurrentSetColor(2, guiColor_3);
+    m_oColorSet.setCurrentSetColor(3, guiColor_4);
+    
     guiLblColorSet = m_oColorSet.currentSet().m_name;
 
 }
@@ -90,6 +100,7 @@ void testApp::draw(){
         }
     
     ofPopMatrix();
+
 
     ofPushMatrix();
         int height = 20;

@@ -30,8 +30,11 @@ private:
     ofxPanel gui;
     
     ofxLabel    guiLblColorSet;
+    ofxLabel    guiLblColors;
     
     ofxButton   guiBtnLoad;
+    ofxButton   guiBtnSave;
+    
     ofxColorSlider  guiColor_1;
     ofxColorSlider  guiColor_2;
     ofxColorSlider  guiColor_3;
@@ -39,6 +42,8 @@ private:
     
     ofxButton       guiNext;
     ofxButton       guiPrev;
+    
+    string          pathXml;
     
     /*
      float frequency;

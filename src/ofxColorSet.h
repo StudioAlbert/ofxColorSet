@@ -13,7 +13,8 @@ class ofxColorSet{
         ofxColorSet();
         virtual~ofxColorSet();
 
-        bool loadFromXml(string _xmlFile);
+    bool loadFromXml(string _xmlFile);
+    void saveIntoXml(string _xmlFile);
     
     public:
         int m_currentSet;

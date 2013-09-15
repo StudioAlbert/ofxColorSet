@@ -99,6 +99,46 @@ bool ofxBasicColorSet::loadFromXml(ofXml &_xml){
     
 }
 
+ofXml ofxBasicColorSet::saveIntoXml(){
+    
+    ofXml xml;
+    
+    vector<oneColor>::iterator colorToSave;
+    string      msg;
+    
+    // First put the name -----------------------------------------------
+    xml.addChild("colorset");
+    xml.setTo("colorset");
+    
+    xml.addValue("name", m_name);
+    
+    for(colorToSave=m_colors.begin(); colorToSave!=m_colors.end(); colorToSave++){
+    
+        xml.addChild("color");
+        xml.setTo("color");
+        
+        xml.addValue("probability", ofToString((*colorToSave).m_proba));
+        // RGB or HSB ????
+        // HSB is my best
+        xml.addValue("hue",(*colorToSave).m_color.getHue());
+        xml.addValue("saturation",(*colorToSave).m_color.getSaturation());
+        xml.addValue("brightness",(*colorToSave).m_color.getBrightness());
+//        xml.addValue("alpha", ofToString((*colorToSave).m_color.a));
+    
+        // go back up
+        xml.setToPrevSibling();
+    }
+    
+    // go back up
+    xml.setToPrevSibling();
+
+    ofLogVerbose() << xml.toString();
+    
+    // go back up
+    return xml;
+    
+}
+
 void ofxBasicColorSet::addColorRGB(float _proba, int _r, int _g, int _b, int _a){
     
     oneColor colorToAdd;
