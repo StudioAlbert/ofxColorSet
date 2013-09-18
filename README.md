@@ -1,4 +1,4 @@
-(not complete)
+(Addon not complete, waiting for documentation)
 
 #ofxColorSet
 
