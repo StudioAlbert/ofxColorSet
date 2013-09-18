@@ -1,4 +1,6 @@
-ofxColorSet
+(not complete)
 
-Helpfull to have a color panel, gradient and always have colors matching together
-(Do not use ofxColorAnimated, for the moment.)
+#ofxColorSet
+
+Helpfull to have a color panel, gradient or a random color amon gcolors you like.
+Example is made to load from xml, define colors you want, and save.
