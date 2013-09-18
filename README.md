@@ -1,4 +1,6 @@
-ofxColorSet
-===========
+(Addon not complete, waiting for documentation)
 
-Helpfull to have a color panel, gradient and always have colors matching together
+#ofxColorSet
+
+Helpfull to have a color panel, gradient or a random color amon gcolors you like.
+Example is made to load from xml, define colors you want, and save.
