@@ -2,6 +2,7 @@
 ######################
 */bin
 !*/bin/data
+*.plist
 
 # Compiled Object files
 *.slo
