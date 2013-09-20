@@ -12,6 +12,9 @@ public:
     void draw();
     void loadFromColorSet();
     
+    void keyPressed(int key);
+    void keyReleased(int key);
+    
 private:
     /*
      ofdColorSetAnimated m_colorSet_Base;
@@ -29,20 +32,27 @@ private:
     ofFloatColor m_color_4;
     ofxLabel    guiLblColorSet;
     
-    ofxButton   guiBtnLoad;
-    ofxButton   guiBtnSave;
+    
+    ofxLabel       guiLblNext;
+    ofxLabel       guiLblPrev;
+    ofxLabel   guiLblLoad;
+    ofxLabel   guiLblSave;
 
     ofxButton   guiAddColorSet;
     ofxButton   guiAddColor;
     
-    ofxPanel    colors;
-    ofxColorSlider  guiColor_1;
-    ofxColorSlider  guiColor_2;
-    ofxColorSlider  guiColor_3;
-    ofxColorSlider  guiColor_4;
+    ofxPanel    colors1;
+    ofxPanel    colors2;
     
-    ofxButton       guiNext;
-    ofxButton       guiPrev;
+    ofParameter<ofColor>  guiColor1;
+    ofParameter<ofColor>  guiColor2;
+    ofParameter<ofColor>  guiColor3;
+    ofParameter<ofColor>  guiColor4;
+    ofParameter<ofColor>  guiColor5;
+    ofParameter<ofColor>  guiColor6;
+    ofParameter<ofColor>  guiColor7;
+    ofParameter<ofColor>  guiColor8;
+
     
     string          pathXml;
     

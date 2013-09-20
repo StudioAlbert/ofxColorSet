@@ -11,7 +11,6 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
     ofXml   xml;
     ofFile  fileControl(_xmlFile);
     
-     
     if(!fileControl.exists()){
         ofLogError("ofxColorSet") << "The file [" << fileControl.getAbsolutePath() << "] does not exist.";
         return false;
@@ -28,6 +27,7 @@ bool ofxColorSet::loadFromXml(string _xmlFile){
     // Check about som colorsetfiles
     if(xml.exists(TAG_ColorSet))
     {
+        m_aSets.clear();
         
         // This gets the first file
         string tagColorSet;
@@ -141,7 +141,7 @@ void ofxColorSet::addColorToKnownSet(string _name, oneColor _color){
     int numFound = findNumByName(_name);
     if(numFound==-1) return;
 
-    m_aSets[numFound].addColor(_color);
+    m_aSets[numFound].setEndColor(_color);
     
 }
 
@@ -167,9 +167,7 @@ void ofxColorSet::setCurrentSetColorHSB(int _index, float _h, float _s, float _b
 void ofxColorSet::setCurrentSetColor(int _index, ofColor _color){
 
     if(m_currentSet>0 && m_currentSet<m_aSets.size()){
-        if(_index<m_aSets[m_currentSet].m_colors.size()){
-            m_aSets[m_currentSet].m_colors[_index].m_color = _color;
-        }
+        m_aSets[m_currentSet].setColor(_index, _color);
     }
 
 }
@@ -189,10 +187,7 @@ ofColor ofxColorSet::getInSetNameByIndex(string _name, int _index){
 ofColor ofxColorSet::getInSetNumByIndex(int _num, int _index){
 
     if(_num != -1 && _num<m_aSets.size()){
-
-        _index %= m_aSets[_num].m_colors.size();
-        return m_aSets[_num].m_colors[_index].m_color;
-
+        return m_aSets[_num].getColorLoop(_index).m_color;
     }else{
         return ofColor(0);
     }
@@ -208,26 +203,11 @@ ofColor ofxColorSet::getCurrentSetByProba(){
 
 ofColor ofxColorSet::getInSetNumByProba(int _num){
 
-    float tirageProba = ofRandom(0,1);
-    float probasSum = 0;
-    vector<oneColor>::iterator colorProba;
-
     if(m_aSets.size()<=0)
         return ofColor(0);
     
-    for(colorProba=m_aSets[_num].m_colors.begin();colorProba!=m_aSets[_num].m_colors.end();colorProba++){
-
-        // Sum every proba found until it goes right (at the end it's 1, and it goes right)
-        // If sum of every probas of every colors is equal to 1
-        probasSum += (*colorProba).m_proba;
-        if( tirageProba < probasSum){
-            // We stop when the first prob is under the sum (CQFD : the colors are in order of theis probs)
-            break;
-        }
-    }
-
-    return (*colorProba).m_color;
-
+    return m_aSets[_num].getColorByProba().m_color;
+    
 }
 
 ofColor ofxColorSet::getCurrentSetByProgress(float _progress){
@@ -248,40 +228,11 @@ ofColor ofxColorSet::getInSetByProgress(string _name, float _progress){
 
 ofColor ofxColorSet::getInSetNumByProgress(int _num, float _progress){
 
-    float grandSum = 0;
-    float lilSum = 0;
-    float relativeRatio = 0;
-
-    oneColor colorProba_prev;
-    oneColor colorProba_next;
-    
     if(m_aSets.size()<=0)
         return ofColor(0);
     
-    for( int i=0; i<m_aSets[_num].getSize(); i++){
-
-        colorProba_prev = m_aSets[_num].m_colors[i];
-
-        if(i<(m_aSets[_num].getSize()-1)){
-            colorProba_next = m_aSets[_num].m_colors[i+1];
-        }else{
-            colorProba_next = m_aSets[_num].m_colors[0];
-        }
-
-        // Sum every proba found until it goes right (at the end it's 1, and it goes right)
-        // If sum of every probas of every colors is equal to 1
-        grandSum += colorProba_prev.m_proba;
-        if( _progress < grandSum){
-            // We stop when the first prob is under the sum (CQFD : the colors are in order of theis probs)
-            break;
-        }
-        lilSum += colorProba_prev.m_proba;
-    }
-
-    relativeRatio = abs(_progress-lilSum)/abs(lilSum-grandSum);
-
-    return colorMix(relativeRatio, colorProba_prev.m_color, colorProba_next.m_color);
-
+    return m_aSets[_num].getColorByProgress(_progress).m_color;
+    
 }
 
 // Change current set
@@ -348,16 +299,3 @@ vector<string> ofxColorSet::getList(){
 
 }
 
-ofColor ofxColorSet::colorMix(float _ratio, ofColor _color1, ofColor _color2){
-
-    ofColor mixedColor;
-
-     // Mixing 2 colors ---------------------------------------------------------------------
-    mixedColor.r = (1-_ratio)*_color1.r + _ratio*_color2.r;
-    mixedColor.g = (1-_ratio)*_color1.g + _ratio*_color2.g;
-    mixedColor.b = (1-_ratio)*_color1.b + _ratio*_color2.b;
-    mixedColor.a = (1-_ratio)*_color1.a + _ratio*_color2.a;
-
-    return mixedColor;
-
-}

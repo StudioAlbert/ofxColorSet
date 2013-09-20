@@ -60,7 +60,6 @@ class ofxColorSet{
         ofColor getInSetNumByProgress(int _num, float _progress);
         ofColor getInSetByProgress(string _name, float _progress);
 
-        ofColor colorMix(float _ratio, ofColor _color1, ofColor _color2);
 
         private:
             int findNumByName(string _name);

@@ -25,7 +25,6 @@ bool ofxBasicColorSet::loadFromXml(ofXml &_xml){
     
     oneColor    colorToAdd;
     
-    string      msg;
     
     // First get the name -----------------------------------------------
     if(_xml.exists("name")){
@@ -44,7 +43,8 @@ bool ofxBasicColorSet::loadFromXml(ofXml &_xml){
         
         do {
            
-            bool doIAddTheColor = false;
+            bool        doIAddTheColor = false;
+            string      msg = "";
             
             if(_xml.exists("probability")){
                 colorToAdd.m_proba = _xml.getFloatValue("probability");
@@ -141,6 +141,35 @@ ofXml ofxBasicColorSet::saveIntoXml(){
     
 }
 
+// -----------------------------------------------------------------------------
+void ofxBasicColorSet::setColor(int _index, ofColor _color){
+    
+    oneColor colorToAdd;
+    
+    colorToAdd.m_color = _color;
+    
+    setColor(_index, colorToAdd);
+}
+
+void ofxBasicColorSet::setColor(int _index, oneColor _color){
+    
+    if(_index<getSize()){
+        m_colors[_index].m_color = _color.m_color;
+    }
+    
+}
+
+
+void ofxBasicColorSet::setEndColor(oneColor _color){
+    addColor(_color);
+}
+
+void ofxBasicColorSet::setEndColor(float _proba, ofColor _color){
+    addColor(_proba, _color);
+}
+
+
+// ---------------------------------------------------------------------------
 void ofxBasicColorSet::addColor(float _proba, ofColor _color){
     
     oneColor colorToAdd;
@@ -180,7 +209,7 @@ void ofxBasicColorSet::addColorHSB(float _proba, int _h, int _s, int _b, int _a)
 void ofxBasicColorSet::addColor(oneColor _color){
     
     vector<oneColor>::iterator colorInsert;
-
+    
     for(colorInsert=m_colors.begin();colorInsert!=m_colors.end();colorInsert++){
         // Insertion in order of probability (most prob -> less index)
         if((*colorInsert).m_proba<_color.m_proba || colorInsert==m_colors.end()){
@@ -197,4 +226,103 @@ void ofxBasicColorSet::addColor(oneColor _color){
 
 int ofxBasicColorSet::getSize(){
     return m_colors.size();
+}
+
+
+oneColor ofxBasicColorSet::getColorLoop(int _index){
+    
+    int noLoopIndex = _index % getSize();
+    return getColorNoLoop(_index);
+    
+}
+
+oneColor ofxBasicColorSet::getColorNoLoop(int _index){
+
+    oneColor toReturn;
+    
+    if(_index >= getSize()){
+        toReturn.m_proba = 1;
+        toReturn.m_color = ofColor(0, 0);
+    }else{
+        toReturn.m_proba = m_colors[_index].m_proba;
+        toReturn.m_color = m_colors[_index].m_color;
+    }
+    
+    return toReturn;
+    
+}
+
+oneColor ofxBasicColorSet::getColorByProba(){
+
+    float tirageProba = ofRandom(0,1);
+    float probasSum = 0;
+    vector<oneColor>::iterator colorProba;
+    
+    for(colorProba=m_colors.begin();colorProba!=m_colors.end();colorProba++){
+    
+        // Sum every proba found until it goes right (at the end it's 1, and it goes right)
+        // If sum of every probas of every colors is equal to 1
+        probasSum += (*colorProba).m_proba;
+        if( tirageProba < probasSum){
+            // We stop when the first prob is under the sum (CQFD : the colors are in order of theirs probanilities)
+            break;
+        }
+    }
+
+    return (*colorProba);
+
+}
+
+
+oneColor ofxBasicColorSet::getColorByProgress(float _progress){
+    
+    float grandSum = 0;
+    float lilSum = 0;
+    float relativeRatio = 0;
+    
+    oneColor colorProba_prev;
+    oneColor colorProba_next;
+    oneColor returnColor;
+
+    for( int i=0; i<getSize(); i++){
+    
+        colorProba_prev = m_colors[i];
+        //colorProba_next = getColorLoop(i+1);
+        
+         if(i<getSize()-1){
+             colorProba_next = m_colors[i+1];
+         }else{
+             colorProba_next = m_colors[0];
+         }
+        
+        // Sum every proba found until it goes right (at the end it's 1, and it goes right)
+        // If sum of every probas of every colors is equal to 1
+        grandSum += colorProba_prev.m_proba;
+        if( _progress < grandSum){
+            // We stop when the first prob is under the sum (CQFD : the colors are in order of theis probs)
+            break;
+        }
+        lilSum += colorProba_prev.m_proba;
+    }
+
+    relativeRatio = abs(_progress-lilSum)/abs(lilSum-grandSum);
+
+    returnColor.m_color = colorMix(relativeRatio, colorProba_prev.m_color, colorProba_next.m_color);
+    returnColor.m_proba = 1;
+    
+    return returnColor;
+}
+
+ofColor ofxBasicColorSet::colorMix(float _ratio, ofColor _color1, ofColor _color2){
+    
+    ofColor mixedColor;
+    
+    // Mixing 2 colors ---------------------------------------------------------------------
+    mixedColor.r = (1-_ratio)*_color1.r + _ratio*_color2.r;
+    mixedColor.g = (1-_ratio)*_color1.g + _ratio*_color2.g;
+    mixedColor.b = (1-_ratio)*_color1.b + _ratio*_color2.b;
+    mixedColor.a = (1-_ratio)*_color1.a + _ratio*_color2.a;
+    
+    return mixedColor;
+    
 }
