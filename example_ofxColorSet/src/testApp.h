@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxColorSet.h"
+#include "ofxColorSetAnimated.h"
 #include "ofxGui.h"
 
 class testApp : public ofBaseApp{
@@ -17,8 +17,8 @@ public:
     
 private:
     /*
-     ofdColorSetAnimated m_colorSet_Base;
-     ofdColorSetAnimated m_colorSet_ToSave;
+     ofxColorSetAnimated m_colorSet_Base;
+     ofxColorSetAnimated m_colorSet_ToSave;
      */
     
     ofxColorSet m_oColorSet;

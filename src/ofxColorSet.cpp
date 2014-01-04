@@ -1,4 +1,4 @@
-#include "ofxColorSet.h"
+#include "ofxColorSetAnimated.h"
 
 
 // COLOR SET --------------------------------------------------------------
