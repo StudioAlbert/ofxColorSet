@@ -6,6 +6,40 @@ ofxColorSet::ofxColorSet(){
     m_currentSet = noCurrentSet;
 }
 
+// ---------------------------------------------------------------------
+bool ofxColorSet::setup(string _xmlFile){
+    bool result;
+    result = loadFromXml(_xmlFile);
+    
+    if(result==true){
+        m_oUI.setup();
+    }
+    m_oUI.setNbSets(m_aSets.size());
+    
+    return result;
+    
+}
+
+// ---------------------------------------------------------------------
+void ofxColorSet::update(bool _reload){
+    
+    if(_reload==true){
+        changeSetByNum(m_oUI.getCurrentSet());
+        m_oUI.setCurrentSet(currentSet().m_name);
+        
+        m_oUI.setColor1(getCurrentSetByIndex(0));
+        m_oUI.setColor2(getCurrentSetByIndex(1));
+        m_oUI.setColor3(getCurrentSetByIndex(2));
+        m_oUI.setColor4(getCurrentSetByIndex(3));
+    }else{
+        setCurrentSetColor(0, m_oUI.getColor1());
+        setCurrentSetColor(1, m_oUI.getColor2());
+        setCurrentSetColor(2, m_oUI.getColor3());
+        setCurrentSetColor(3, m_oUI.getColor4());
+    }
+    
+}
+
 bool ofxColorSet::loadFromXml(string _xmlFile){
     
     ofXml   xml;

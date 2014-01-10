@@ -27,6 +27,8 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		EA3C87B5188012C90033D12E /* ofdTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA3C87B3188012C90033D12E /* ofdTimer.cpp */; };
+		EA3C87B81880133C0033D12E /* ofxColorSetUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA3C87B61880133C0033D12E /* ofxColorSetUI.cpp */; };
 		EAA74B1B17E39FBA001E90B2 /* ofxColorSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAA74B1917E39FBA001E90B2 /* ofxColorSet.cpp */; };
 		EAA74B3A17E3A4B5001E90B2 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAA74B2917E3A4B5001E90B2 /* ofxBaseGui.cpp */; };
 		EAA74B3B17E3A4B5001E90B2 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAA74B2B17E3A4B5001E90B2 /* ofxButton.cpp */; };
@@ -94,6 +96,10 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		EA3C87B3188012C90033D12E /* ofdTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofdTimer.cpp; sourceTree = "<group>"; };
+		EA3C87B4188012C90033D12E /* ofdTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofdTimer.h; sourceTree = "<group>"; };
+		EA3C87B61880133C0033D12E /* ofxColorSetUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxColorSetUI.cpp; path = ../src/ofxColorSetUI.cpp; sourceTree = "<group>"; };
+		EA3C87B71880133C0033D12E /* ofxColorSetUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxColorSetUI.h; path = ../src/ofxColorSetUI.h; sourceTree = "<group>"; };
 		EAA74B1917E39FBA001E90B2 /* ofxColorSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; name = ofxColorSet.cpp; path = ../src/ofxColorSet.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		EAA74B1A17E39FBA001E90B2 /* ofxColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxColorSet.h; path = ../src/ofxColorSet.h; sourceTree = "<group>"; };
 		EAA74B2917E3A4B5001E90B2 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseGui.cpp; sourceTree = "<group>"; };
@@ -148,6 +154,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				EA3C87B2188012C90033D12E /* ofdTimer */,
 				EAA74B2717E3A4B5001E90B2 /* ofxGui */,
 				EAA74B1817E39FAD001E90B2 /* ofxColorSet */,
 			);
@@ -233,9 +240,21 @@
 			name = openFrameworks;
 			sourceTree = "<group>";
 		};
+		EA3C87B2188012C90033D12E /* ofdTimer */ = {
+			isa = PBXGroup;
+			children = (
+				EA3C87B3188012C90033D12E /* ofdTimer.cpp */,
+				EA3C87B4188012C90033D12E /* ofdTimer.h */,
+			);
+			name = ofdTimer;
+			path = ../../ofdTimer;
+			sourceTree = "<group>";
+		};
 		EAA74B1817E39FAD001E90B2 /* ofxColorSet */ = {
 			isa = PBXGroup;
 			children = (
+				EA3C87B61880133C0033D12E /* ofxColorSetUI.cpp */,
+				EA3C87B71880133C0033D12E /* ofxColorSetUI.h */,
 				EAFCF04517E48043002B68FC /* ofxBasicColorSet.cpp */,
 				EAFCF04617E48043002B68FC /* ofxBasicColorSet.h */,
 				EAA74B1917E39FBA001E90B2 /* ofxColorSet.cpp */,
@@ -368,9 +387,11 @@
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				EAA74B1B17E39FBA001E90B2 /* ofxColorSet.cpp in Sources */,
 				EAA74B3A17E3A4B5001E90B2 /* ofxBaseGui.cpp in Sources */,
+				EA3C87B5188012C90033D12E /* ofdTimer.cpp in Sources */,
 				EAA74B3B17E3A4B5001E90B2 /* ofxButton.cpp in Sources */,
 				EAA74B3C17E3A4B5001E90B2 /* ofxGuiGroup.cpp in Sources */,
 				EAA74B3D17E3A4B5001E90B2 /* ofxLabel.cpp in Sources */,
+				EA3C87B81880133C0033D12E /* ofxColorSetUI.cpp in Sources */,
 				EAA74B3E17E3A4B5001E90B2 /* ofxPanel.cpp in Sources */,
 				EAA74B3F17E3A4B5001E90B2 /* ofxSlider.cpp in Sources */,
 				EAA74B4017E3A4B5001E90B2 /* ofxSliderGroup.cpp in Sources */,

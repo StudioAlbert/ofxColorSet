@@ -10,7 +10,7 @@ void testApp::setup(){
     ofSetFrameRate(25);
 
     pathXml = "ColorSets.xml";
-    m_oColorSet.loadFromXml(pathXml);
+    m_oColorSet.setup(pathXml);
     
     // QQES SLIDERS --
     colorSet.setup("Choose a color set", "settings.xml", ofGetWidth() - 300, 10);
@@ -159,7 +159,7 @@ void testApp::keyReleased(int key){
         
         if(pathToLoad.bSuccess){
             pathXml = pathToLoad.getPath();
-            m_oColorSet.loadFromXml(pathXml);
+            m_oColorSet.setup(pathXml);
         }
         
     }
