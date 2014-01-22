@@ -100,7 +100,7 @@
 		EA3C87B4188012C90033D12E /* ofdTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofdTimer.h; sourceTree = "<group>"; };
 		EA3C87B61880133C0033D12E /* ofxColorSetUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxColorSetUI.cpp; path = ../src/ofxColorSetUI.cpp; sourceTree = "<group>"; };
 		EA3C87B71880133C0033D12E /* ofxColorSetUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxColorSetUI.h; path = ../src/ofxColorSetUI.h; sourceTree = "<group>"; };
-		EAA74B1917E39FBA001E90B2 /* ofxColorSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; name = ofxColorSet.cpp; path = ../src/ofxColorSet.cpp; sourceTree = "<group>"; };
+		EAA74B1917E39FBA001E90B2 /* ofxColorSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; name = ofxColorSet.cpp; path = ../src/ofxColorSet.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		EAA74B1A17E39FBA001E90B2 /* ofxColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxColorSet.h; path = ../src/ofxColorSet.h; sourceTree = "<group>"; };
 		EAA74B2917E3A4B5001E90B2 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseGui.cpp; sourceTree = "<group>"; };
 		EAA74B2A17E3A4B5001E90B2 /* ofxBaseGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBaseGui.h; sourceTree = "<group>"; };
