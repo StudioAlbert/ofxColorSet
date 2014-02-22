@@ -32,7 +32,8 @@ public:
     string           m_name;
 
 private:
-    vector<oneColor> m_colors;
+    map<int, oneColor> m_colors;
+    
 public:
     oneColor getColorLoop(int _index);
     oneColor getColorNoLoop(int _index);

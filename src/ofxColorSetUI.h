@@ -45,8 +45,10 @@ public:
     void setColor4(ofColor _color){m_pxColor4 = _color;}
     
     int getCurrentSet(){return m_pxCurrentSet;}
-    void setCurrentSet(string _name){m_pxCurrentSetName = _name;}
+    void setCurrentSetName(string _name){m_pxCurrentSetName = _name;}
+    void setCurrentSetIdx(int _idx){m_pxCurrentSet = _idx;}
     
     bool getChange(){return m_pxChange;}
+    void setChange(bool _change){m_pxChange = _change;}
     
 };

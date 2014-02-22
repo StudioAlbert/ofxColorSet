@@ -70,7 +70,7 @@ public:
     ofxColorSetUI   m_oUI;
     
 public:
-    void update(bool _reload);
+    void update();
     
 };
 

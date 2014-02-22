@@ -13,24 +13,31 @@ bool ofxColorSet::setup(string _xmlFile){
     
     if(result==true){
         m_oUI.setup();
+        m_oUI.setNbSets(m_aSets.size());
     }
-    m_oUI.setNbSets(m_aSets.size());
+    
+    m_currentSet = 0;
+    update();
     
     return result;
     
 }
 
 // ---------------------------------------------------------------------
-void ofxColorSet::update(bool _reload){
+void ofxColorSet::update(){
     
-    if(_reload==true){
+    if(m_oUI.getChange()==true){
+
         changeSetByNum(m_oUI.getCurrentSet());
-        m_oUI.setCurrentSet(currentSet().m_name);
+        m_oUI.setCurrentSetName(currentSet().m_name);
         
         m_oUI.setColor1(getCurrentSetByIndex(0));
         m_oUI.setColor2(getCurrentSetByIndex(1));
         m_oUI.setColor3(getCurrentSetByIndex(2));
         m_oUI.setColor4(getCurrentSetByIndex(3));
+        
+        m_oUI.setChange(false);
+        
     }else{
         setCurrentSetColor(0, m_oUI.getColor1());
         setCurrentSetColor(1, m_oUI.getColor2());

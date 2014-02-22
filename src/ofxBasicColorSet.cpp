@@ -104,7 +104,7 @@ ofXml ofxBasicColorSet::saveIntoXml(){
     ofXml xml;
     int     idxColor = 0;
     
-    vector<oneColor>::iterator colorToSave;
+    map<int, oneColor>::iterator colorToSave;
     
     // First put the name -----------------------------------------------
     xml.addChild(TAG_ColorSet);
@@ -118,14 +118,14 @@ ofXml ofxBasicColorSet::saveIntoXml(){
         xml.addChild("color");
         xml.setTo("color[" + ofToString(idxColor++) + "]");
         
-        xml.addValue("probability", ofToString((*colorToSave).m_proba));
+        xml.addValue("probability", ofToString((*colorToSave).second.m_proba));
         // RGB or HSB ????
         // HSB is my best
-        xml.addValue("hue",(*colorToSave).m_color.getHue());
-        xml.addValue("saturation",(*colorToSave).m_color.getSaturation());
-        xml.addValue("brightness",(*colorToSave).m_color.getBrightness());
+        xml.addValue("hue",(*colorToSave).second.m_color.getHue());
+        xml.addValue("saturation",(*colorToSave).second.m_color.getSaturation());
+        xml.addValue("brightness",(*colorToSave).second.m_color.getBrightness());
         // don't know why, alpha sucks...
-        int alpha = (*colorToSave).m_color.a;
+        int alpha = (*colorToSave).second.m_color.a;
         xml.addValue("alpha", alpha);
     
         // go back up
@@ -153,9 +153,9 @@ void ofxBasicColorSet::setColor(int _index, ofColor _color){
 
 void ofxBasicColorSet::setColor(int _index, oneColor _color){
     
-    if(_index<getSize()){
+    //if(_index<getSize()){
         m_colors[_index].m_color = _color.m_color;
-    }
+    //}
     
 }
 
@@ -208,20 +208,26 @@ void ofxBasicColorSet::addColorHSB(float _proba, int _h, int _s, int _b, int _a)
 
 void ofxBasicColorSet::addColor(oneColor _color){
     
-    vector<oneColor>::iterator colorInsert;
+    map<int, oneColor>::iterator colorInsert;
+    int keyToAdd = 0;
     
     for(colorInsert=m_colors.begin();colorInsert!=m_colors.end();colorInsert++){
+        keyToAdd++;
         // Insertion in order of probability (most prob -> less index)
-        if((*colorInsert).m_proba<_color.m_proba || colorInsert==m_colors.end()){
-            m_colors.insert(colorInsert,_color);
+        if((*colorInsert).second.m_proba<_color.m_proba || colorInsert==m_colors.end()){
+            //m_colors.insert(colorInsert,_color);
             break;
         }
     }
     
+    m_colors[keyToAdd] = _color;
+    
     // No insertion -> insertion in bottom of vector
+    /*
     if(colorInsert==m_colors.end()){
         m_colors.push_back(_color);
     }
+     */
 }
 
 int ofxBasicColorSet::getSize(){
@@ -256,20 +262,20 @@ oneColor ofxBasicColorSet::getColorByProba(){
 
     float tirageProba = ofRandom(0,1);
     float probasSum = 0;
-    vector<oneColor>::iterator colorProba;
+    map<int,oneColor>::iterator colorProba;
     
     for(colorProba=m_colors.begin();colorProba!=m_colors.end();colorProba++){
     
         // Sum every proba found until it goes right (at the end it's 1, and it goes right)
         // If sum of every probas of every colors is equal to 1
-        probasSum += (*colorProba).m_proba;
+        probasSum += (*colorProba).second.m_proba;
         if( tirageProba < probasSum){
             // We stop when the first prob is under the sum (CQFD : the colors are in order of theirs probanilities)
             break;
         }
     }
 
-    return (*colorProba);
+    return (*colorProba).second;
 
 }
 
